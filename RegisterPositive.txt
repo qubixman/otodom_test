@@ -1,0 +1,37 @@
+package oto.dom;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class RegisterPositive {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "C:\\Webdriver\\chromedriver83\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(20000, TimeUnit.MILLISECONDS);
+		driver.get("https://otodom.pl/");
+		driver.findElement(By.id("my_account")).click(); //rejestracja
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//a[@class='btn btn-default']")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//div[@class='affix-box affix-top']//a[@class='btn btn-default'][contains(text(),'Zarejestruj si')]")).click();
+		driver.findElement(By.id("userEmail")).sendKeys("kubakowalski.kuba@gmail.com");
+		driver.findElement(By.id("userPass")).sendKeys("test1");
+		driver.findElement(By.id("userPass-repeat")).sendKeys("test1");
+		Thread.sleep(500);
+		driver.findElement(By.xpath("//button[@class='btn btn-default']")).click();
+		String text1 = driver.findElement(By.xpath("//h3[contains(text(),'Teraz aktywuj swoje konto!')]")).getText();
+		String text2 = driver.findElement(By.xpath("//p[contains(text(),'my na Twój adres')]")).getText();
+		System.out.println(text1);
+		System.out.println(text2);
+		Thread.sleep(5000);
+		driver.quit();
+	}
+
+
+}

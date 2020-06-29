@@ -1,0 +1,72 @@
+package oto.dom;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.sikuli.script.FindFailed;
+import org.sikuli.script.Screen;
+
+public class Searching {
+	
+	static String PATH = "C:\\Users\\Jakub_Kowalski\\Desktop\\";
+
+	public static void main(String[] args) throws InterruptedException, FindFailed {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "C:\\Webdriver\\chromedriver83\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		//----------------------------------------- LOGOWANIE
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(20000, TimeUnit.MILLISECONDS);
+		driver.get("https://otodom.pl/");
+		driver.findElement(By.id("my_account")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.id("login")).sendKeys("kubakowalski.kuba@gmail.com");
+		driver.findElement(By.id("password")).sendKeys("test1");
+		Thread.sleep(1000);
+		driver.findElement(By.id("submit-login-2fa")).click();
+		Thread.sleep(1000);
+		//----------------------------------------- WYSZUKIWANIE OGŁOSZEŃ
+		driver.get("https://otodom.pl/");
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//span[contains(text(),'Mieszkania')]")).click(); // wybór rodzaju wyszukiwanej nieruchomości
+		driver.findElement(By.xpath("//li[@id='downshift-1-item-3']")).click();
+		driver.findElement(By.xpath("//span[contains(text(),'na sprzeda')]")).click(); // wybór rodzaju ogłoszeń
+		driver.findElement(By.xpath("//li[@id='downshift-2-item-0']")).click();
+		Thread.sleep(500);
+		driver.findElement(By.xpath("//label[@id='downshift-0-label']")).sendKeys("Koszalin"); // wybór lokalizacji
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//div[@id='downshift-0-item-0']")).click();
+		Thread.sleep(500);
+		driver.findElement(By.xpath("//div[@class='css-19u3g69']//button[@class='css-1nx67t4']")).click();
+		Thread.sleep(1000);
+		String text = driver.findElement(By.xpath("//*[@id=\"body-container\"]/div/div/div[1]/div/div[1]/div[1]/strong")).getText();
+		System.out.println("Liczba ofert: " + text); // wyświetlenie ilości znaleznionych ogłoszeń
+		Thread.sleep(2000); 
+        js.executeScript("window.scrollBy(0,6000)", "");
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//*[@id=\"body-container\"]/div/div/div[1]/div/div[5]/div[1]/div[2]/div[1]/span/span[1]/span")).click();
+        Thread.sleep(1000);
+        Screen scr = new Screen(0);
+        scr.click(PATH + "72.png"); // wybór ilości wyświetlanych ogłoszeń na stronie
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("//*[@id=\"Path\"]")).click(); // dodanie ogłoszenia do ulubionych
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//div[@class='modal-dialog modal-notifications-subscribe']//button[@class='close icon-close']")).click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath("//*[@id=\"Path\"]")).click(); // usunięcie ogłoszenia z ulubionych
+		Thread.sleep(1000);
+		String fav_delete = driver.findElement(By.xpath("//*[@id=\"message_system\"]/div/div/p/span")).getText();
+		System.out.println(fav_delete); // wyświetlenie komunikatu
+        driver.findElement(By.xpath("//*[@id=\"Path\"]")).click(); // dodanie ogłoszenia do ulubionych
+        Thread.sleep(1000);
+		String fav_add = driver.findElement(By.xpath("//*[@id=\"message_system\"]/div/div/p/span")).getText();
+		System.out.println(fav_add); // wyświetlenie komunikatu
+		Thread.sleep(5000);
+		driver.quit();
+	}
+
+}
